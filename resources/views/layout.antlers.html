@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="{{ site:short_locale }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title ?? site:name }}</title>
+    
+    <!-- Replace CDN with local Tailwind -->
+    <link href="/css/tailwind.css" rel="stylesheet">
+     <!-- Non-JS fallback -->
+    <noscript>
+        <link rel="stylesheet" href="/css/tailwind.css">
+        <link rel="stylesheet" href="/assets/css/fontawesome.min.css">
+    </noscript>
+    <!-- Other styles -->
+    
+    <link rel="preload" href="/css/home.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/css/home.css"></noscript>
+<link rel="preload" href="/css/showapp.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/css/showapp.css"></noscript>
+
+    {{ vite src="resources/js/site.js|resources/css/site.css" }}
+</head>
+
+<body>
+    <a href="#main-content" class="sr-only focus:not-sr-only">Skip to main content</a>
+    
+    <header>
+        {{ partial:nav }}
+    </header>
+    
+    <main id="main-content">
+        {{ template_content }}
+    </main>
+    
+    {{ partial:footer }}
+    {{ partial:scripts }}
+</body>
+</html>

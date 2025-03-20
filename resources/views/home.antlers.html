@@ -1,0 +1,239 @@
+<div class="flex-1 p-3 sm:p-5 overflow-y-auto bg-gray-50 dark:bg-gray-900">
+    <!-- Platform Banners -->
+    {{ if current_url == '/' }}
+    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8 animate-fade-in">
+        <div class="flex items-center p-3 sm:p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md border-l-4 border-green-500 cursor-pointer transform transition-all duration-300 hover:-translate-y-1 group w-full">
+            <i class="fab fa-android text-2xl sm:text-3xl text-green-500 mr-3 sm:mr-4 group-hover:text-green-600 transition-colors"></i>
+            <div class="flex flex-col">
+                <span class="text-xs text-gray-500 dark:text-gray-400 mb-1">Get it on</span>
+                <strong class="text-sm sm:text-base font-semibold text-gray-800 dark:text-gray-200">Google Play</strong>
+            </div>
+        </div>
+        <div class="flex items-center p-3 sm:p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md border-l-4 border-blue-500 cursor-pointer transform transition-all duration-300 hover:-translate-y-1 group w-full">
+            <i class="fab fa-apple text-2xl sm:text-3xl text-blue-500 mr-3 sm:mr-4 group-hover:text-blue-600 transition-colors"></i>
+            <div class="flex flex-col">
+                <span class="text-xs text-gray-500 dark:text-gray-400 mb-1">Download on the</span>
+                <strong class="text-sm sm:text-base font-semibold text-gray-800 dark:text-gray-200">App Store</strong>
+            </div>
+        </div>
+    </div>
+    {{ /if }}
+
+<!-- Featured Section -->
+ <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
+        {{
+            collection:apps featured:is="true" limit="3"
+            merge="true" with="games|tools"
+        }}
+            <a href="{{ url }}" class="block group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div class="relative h-36 sm:h-48 overflow-hidden">
+                    {{ glide:featured_image width="300" height="150" fit="crop_focal" }}
+                        <img src="{{ url }}" alt="{{ alt }}"
+                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    {{ /glide:featured_image }}
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent"></div>
+                </div>
+                <div class="p-4 sm:p-5">
+                    <div class="flex justify-between items-start mb-2 sm:mb-3">
+                        <h3 class="text-base sm:text-lg font-bold text-gray-800 dark:text-gray-200 truncate">{{ title }}</h3>
+                        <span class="flex items-center text-xs sm:text-sm bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 px-2 py-1 rounded-full">
+                            <i class="fas fa-star mr-1 text-xs"></i> {{ rating }}
+                        </span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm leading-relaxed line-clamp-2 sm:line-clamp-3">
+                        {{ short_description }}
+                    </p>
+                    <div class="mt-2 sm:mt-3 text-xs text-gray-500 dark:text-gray-400">
+                        {{ if collection == "apps" }}
+                            <i class="fas fa-mobile-alt mr-2"></i>{{ category }}
+                        {{ elseif collection == "games" }}
+                            <i class="fas fa-gamepad mr-2"></i>{{ category }}
+                        {{ else }}
+                            <i class="fas fa-tools mr-2"></i>{{ category }}
+                        {{ /if }}
+                    </div>
+                </div>
+            </a>
+        {{ /collection:apps }}
+    </div>
+
+
+    <!-- Trending Section -->
+    <div class="mb-8 sm:mb-12">
+        <div class="flex justify-between items-center mb-4 sm:mb-6">
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-200">Trending Now</h2>
+        </div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+            {{
+                collection:apps is_trending:is="true" limit="6"
+                merge="true" with="games|tools"
+            }}
+                <a href="{{ url }}" class="group relative block bg-white dark:bg-gray-800 p-2 sm:p-3 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
+                    <div class="relative aspect-square w-full mb-2 sm:mb-3 rounded-xl overflow-hidden">
+                        {{ glide:icon width="128" height="128" }}
+                            <img src="{{ url }}" alt="{{ alt }}"
+                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        {{ /glide:icon }}
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-xs sm:text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">{{ title }}</h3>
+                        <span class="text-xs text-gray-500 dark:text-gray-400 uppercase">
+                            {{ collection | upper }}
+                        </span>
+                    </div>
+                    {{ if is_trending }}
+                    <span class="absolute top-1 right-1 sm:top-2 sm:right-2 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 text-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full">
+                        Trending
+                    </span>
+                    {{ /if }}
+                </a>
+            {{ /collection:apps }}
+        </div>
+    </div>
+
+
+    <!-- Games Section -->
+    <div class="mb-8 sm:mb-12">
+        <div class="flex justify-between items-center mb-4 sm:mb-6">
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-200">Popular Games</h2>
+            <a href="{{ route:games.index }}" class="flex items-center text-blue-500 hover:text-blue-600 dark:text-blue-400 transition-colors">
+                <span class="text-xs sm:text-sm font-medium">View All</span>
+                <i class="fas fa-chevron-right ml-1 sm:ml-2 text-xs"></i>
+            </a>
+        </div>
+        <div class="flex flex-col gap-3 sm:gap-4">
+            {{ collection:games sort="rating:desc" limit="3" }}
+                <div class="group relative bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
+                    <a href="{{ url }}" class="flex items-center flex-1" aria-label="{{ title ?? name ?? 'View details' }}">
+                    <div class="flex items-center">
+                          <div class="relative w-12 h-12 sm:w-16 sm:h-16 rounded-xl overflow-hidden shrink-0">
+                           {{ glide:icon width="128" height="128" }}
+                            <img src="{{ url }}" alt="{{ alt }}"
+                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            {{ /glide:icon }}
+                        </div>
+                         
+                      <div class="ml-3 sm:ml-4 flex-1 min-w-0">
+                            <h3 class="text-sm sm:text-base font-semibold text-gray-800 dark:text-gray-200 truncate">{{ title }}</h3>
+                           <div class="flex flex-wrap items-center gap-2 sm:gap-4 mt-1 sm:mt-2">
+                                <div class="flex items-center text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                                    <i class="fas fa-hdd mr-1 sm:mr-2"></i>
+                                    <span>{{ size }}</span>
+                                </div>
+                                <div class="flex items-center text-xs sm:text-sm text-amber-500">
+                                    <i class="fas fa-star mr-1 sm:mr-2"></i>
+                                    <span>{{ rating }}</span>
+                                </div>
+                                {{ if age_rating }}
+                                <div class="text-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full bg-gray-100 dark:bg-gray-700">
+                                    {{ age_rating | upper }}
+                                </div>
+                                {{ /if }}
+                            </div>
+                        </div>
+                    
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gray-100 dark:bg-gray-700 overflow-hidden rounded-b-xl">
+                        <div class="h-full bg-blue-500 progress-bar" data-time="{{ processing_time ?? 3000 }}"></div>
+                    </div>
+                </div>
+            {{ /collection:games }}
+        </div>
+    </div>
+
+    <!-- Apps Section -->
+    <div class="mb-8 sm:mb-12">
+        <div class="flex justify-between items-center mb-4 sm:mb-6">
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-200">Featured Apps</h2>
+            <a href="{{ route:apps.index }}" class="flex items-center text-blue-500 hover:text-blue-600 dark:text-blue-400 transition-colors">
+                <span class="text-xs sm:text-sm font-medium">View All</span>
+                <i class="fas fa-chevron-right ml-1 sm:ml-2 text-xs"></i>
+            </a>
+        </div>
+         <div class="flex flex-col gap-3 sm:gap-4">
+            {{ collection:apps sort="rating:desc" limit="3" }}
+                <div class="group relative bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
+                   <a href="{{ url }}" class="flex items-center flex-1" aria-label="{{ title ?? name ?? 'View details' }}">
+                    <div class="flex items-center">
+                        <div class="relative w-12 h-12 sm:w-16 sm:h-16 rounded-xl overflow-hidden shrink-0">
+                           {{ glide:icon width="128" height="128" }}
+                                <img src="{{ url }}" alt="{{ alt }}"
+                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            {{ /glide:icon }}
+                        </div>
+                        <div class="ml-3 sm:ml-4 flex-1 min-w-0">
+                            <h3 class="text-sm sm:text-base font-semibold text-gray-800 dark:text-gray-200 truncate">{{ title }}</h3>
+                            <div class="flex flex-wrap items-center gap-2 sm:gap-4 mt-1 sm:mt-2">
+                                <div class="flex items-center text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                                    <i class="fas fa-hdd mr-1 sm:mr-2"></i>
+                                    <span>{{ size }}</span>
+                                </div>
+                                <div class="flex items-center text-xs sm:text-sm text-amber-500">
+                                    <i class="fas fa-star mr-1 sm:mr-2"></i>
+                                    <span>{{ rating }}</span>
+                                </div>
+                                <div class="text-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full bg-gray-100 dark:bg-gray-700">
+                                    {{ category }}
+                                </div>
+                            </div>
+                       
+
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gray-100 dark:bg-gray-700 overflow-hidden rounded-b-xl">
+                        <div class="h-full bg-blue-500 progress-bar" data-time="{{ processing_time ?? 2000 }}"></div>
+                    </div>
+                </div>
+            {{ /collection:apps }}
+        </div>
+    </div>
+
+    <!-- Tools Section -->
+    {{ if current_url == '/' }}
+    <div class="mb-8 sm:mb-12">
+        <div class="flex justify-between items-center mb-4 sm:mb-6">
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-200">Essential Tools</h2>
+            <a href="{{ route:tools.index }}" class="flex items-center text-blue-500 hover:text-blue-600 dark:text-blue-400 transition-colors">
+                <span class="text-xs sm:text-sm font-medium">View All</span>
+                <i class="fas fa-chevron-right ml-1 sm:ml-2 text-xs"></i>
+            </a>
+        </div>
+        <div class="flex flex-col gap-3 sm:gap-4">
+            {{ collection:tools sort="rating:desc" limit="2" }}
+                <div class="group relative bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
+                    <a href="{{ url }}" class="flex items-center flex-1" aria-label="{{ title ?? name ?? 'View details' }}">
+                    <div class="flex items-center">
+                        <div class="relative w-12 h-12 sm:w-16 sm:h-16 rounded-xl overflow-hidden shrink-0">
+                            {{ glide:icon width="128" height="128" }}
+                                <img src="{{ url }}" alt="{{ alt }}"
+                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            {{ /glide:icon }}
+                         </div>
+                        <div class="ml-3 sm:ml-4 flex-1 min-w-0">
+                            <h3 class="text-sm sm:text-base font-semibold text-gray-800 dark:text-gray-200 truncate">{{ title }}</h3>
+                            <div class="flex flex-wrap items-center gap-2 sm:gap-4 mt-1 sm:mt-2">
+                                <div class="flex items-center text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                                    <i class="fas fa-hdd mr-1 sm:mr-2"></i>
+                                    <span>{{ size }}</span>
+                                </div>
+                                <div class="flex items-center text-xs sm:text-sm text-amber-500">
+                                    <i class="fas fa-star mr-1 sm:mr-2"></i>
+                                    <span>{{ rating }}</span>
+                                </div>
+                                {{ if pro_version_available }}
+                                <div class="text-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300">
+                                    PRO
+                                </div>
+                                {{ /if }}
+                            </div>
+                        </div>
+                    
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gray-100 dark:bg-gray-700 overflow-hidden rounded-b-xl">
+                        <div class="h-full bg-blue-500 progress-bar" data-time="{{ processing_time ?? 1500 }}"></div>
+                    </div>
+                </div>
+            {{ /collection:tools }}
+        </div>
+    </div>
+    {{ /if }}
+</div>

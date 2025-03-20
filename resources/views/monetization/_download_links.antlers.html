@@ -1,0 +1,41 @@
+{{ if smart_link_enabled }}
+    <div class="space-y-2">
+        {{ if collection:handle == "apps" }}
+            <a href="{{ android_link }}" class="block bg-green-600 text-white p-3 rounded-lg text-center">
+                Download for Android
+            </a>
+            <a href="{{ ios_link }}" class="block bg-blue-600 text-white p-3 rounded-lg text-center">
+                Download for iOS
+            </a>
+        {{ elseif collection:handle == "tools" }}
+            <a href="{{ windows_link }}" class="block bg-blue-600 text-white p-3 rounded-lg text-center">
+                Windows Download
+            </a>
+            <a href="{{ mac_link }}" class="block bg-gray-600 text-white p-3 rounded-lg text-center">
+                macOS Download
+            </a>
+            <a href="{{ linux_link }}" class="block bg-orange-600 text-white p-3 rounded-lg text-center">
+                Linux Download
+            </a>
+        {{ /if }}
+    </div>
+{{ else }}
+    <a href="{{ default_link }}" class="block bg-primary-600 text-white p-3 rounded-lg text-center">
+        Download Now
+    </a>
+{{ /if }}
+
+{{ if content_locker }}
+    <div class="bg-yellow-100 p-4 rounded-lg text-yellow-800">
+        <p class="font-semibold">⚠️ Content Locked</p>
+        <p>Complete a {{ cpa_type:label }} to unlock download</p>
+    </div>
+{{ /if }}
+
+{{ if collection:handle == "tools" && affiliate_program }}
+    <div class="mt-4 border-t pt-4">
+        <a href="{{ affiliate_link }}" class="text-primary-600 hover:underline">
+            Join Affiliate Program →
+        </a>
+    </div>
+{{ /if }}

@@ -1,0 +1,216 @@
+# tools.yaml - Blueprint for Tools Collection
+title: Tool
+sections:
+  main:
+    display: Main Content
+    fields:
+      -
+        handle: title
+        field:
+          type: text
+          required: true
+          validate:
+            - required
+          display: Tool Name
+      -
+        handle: slug
+        field:
+          type: slug
+          required: true
+          validate:
+            - required
+          display: URL Slug
+          generate_from: title
+      -
+        handle: tool_description
+        field:
+          type: markdown
+          display: Tool Description
+          instructions: Full description with supported markdown formatting
+      -
+        handle: short_description
+        field:
+          type: textarea
+          display: Short Description
+          character_limit: 120
+          instructions: Brief description for featured cards and listings
+      -
+        handle: icon
+        field:
+          type: assets
+          container: tool_assets
+          max_files: 1
+          display: Tool Icon
+          instructions: Square tool icon (512x512px recommended)
+      -
+        handle: screenshots
+        field:
+          type: assets
+          container: tool_assets
+          max_files: 5
+          display: Screenshots
+          instructions: Tool screenshots for gallery view
+      -
+        handle: featured_image
+        field:
+          type: assets
+          container: tool_assets
+          max_files: 1
+          display: Featured Image
+          instructions: Wide banner image for featured section (1200x600px recommended)
+  sidebar:
+    display: Tool Details
+    fields:
+      -
+        handle: size
+        field:
+          type: text
+          display: Tool Size
+          instructions: Size in MB (e.g., 25MB)
+      -
+        handle: rating
+        field:
+          type: float
+          display: Rating
+          instructions: Rating from 1.0 to 5.0
+          validate:
+            - min:1
+            - max:5
+      -
+        handle: version
+        field:
+          type: text
+          display: Version
+          instructions: Current tool version (e.g., 1.0.5)
+      -
+        handle: developer
+        field:
+          type: text
+          display: Developer Name
+      -
+        handle: category
+        field:
+          type: select
+          options:
+            file_management: File Management
+            security: Security
+            system: System Tools
+            networking: Networking
+            optimization: Optimization
+            utilities: Utilities
+            conversion: File Conversion
+            development: Development Tools
+          display: Category
+          default: utilities
+      -
+        handle: featured
+        field:
+          type: toggle
+          display: Featured Tool
+          instructions: Show in featured section
+          default: false
+      -
+        handle: is_trending
+        field:
+          type: toggle
+          display: Trending
+          instructions: Show in trending section
+          default: false
+      -
+        handle: pro_version_available
+        field:
+          type: toggle
+          display: Pro Version Available
+          instructions: Indicate if a premium version exists
+          default: false
+  monetization:
+    display: CPA & Monetization
+    fields:
+      -
+        handle: content_locker
+        field:
+          type: toggle
+          display: Enable Content Locker
+          instructions: Lock tool download behind CPA offer
+          default: false
+      -
+        handle: cpa_type
+        field:
+          type: select
+          options:
+            none: None
+            email: Email Submit
+            survey: Survey Completion
+            app_install: App Install
+            sign_up: Account Creation
+          display: CPA Offer Type
+          default: none
+          if:
+            content_locker: true
+      -
+        handle: cpa_link
+        field:
+          type: text
+          display: CPA Offer Link
+          instructions: Link to CPA offer page
+          if:
+            content_locker: true
+      -
+        handle: smart_link_enabled
+        field:
+          type: toggle
+          display: Enable Smart Link
+          instructions: Use smart links for platform detection
+          default: false
+      -
+        handle: windows_link
+        field:
+          type: text
+          display: Windows Download Link
+          instructions: Link for Windows platform
+          if:
+            smart_link_enabled: true
+      -
+        handle: mac_link
+        field:
+          type: text
+          display: Mac Download Link
+          instructions: Link for macOS platform
+          if:
+            smart_link_enabled: true
+      -
+        handle: linux_link
+        field:
+          type: text
+          display: Linux Download Link
+          instructions: Link for Linux platform
+          if:
+            smart_link_enabled: true
+      -
+        handle: default_link
+        field:
+          type: text
+          display: Default Download Link
+          instructions: Fallback link for direct download or other platforms
+      -
+        handle: processing_time
+        field:
+          type: integer
+          display: Processing Time (ms)
+          instructions: Time in milliseconds for the download processing animation
+          default: 1500
+      -
+        handle: affiliate_program
+        field:
+          type: toggle
+          display: Affiliate Program
+          instructions: Tool offers an affiliate program
+          default: false
+      -
+        handle: affiliate_link
+        field:
+          type: text
+          display: Affiliate Program Link
+          instructions: Link to join affiliate program
+          if:
+            affiliate_program: true

@@ -1,0 +1,386 @@
+<!-- show.antlers.html - Universal detail view for apps, games and tools collections -->
+<div class="flex-1 p-3 sm:p-5 overflow-y-auto bg-gray-50 dark:bg-gray-900">
+    <!-- Back button -->
+    <div class="mb-4 sm:mb-6">
+        <a href="{{ referer ?? collection:url }}" class="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+            <i class="fa fa-arrow-left mr-2"></i> Back to {{ collection | title }}
+        </a>
+    </div>
+
+    <!-- Item Header -->
+    <div class="flex flex-col md:flex-row items-start gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <!-- Icon -->
+        <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl overflow-hidden shadow-md flex-shrink-0 bg-white dark:bg-gray-800 p-2 sm:p-3 border border-gray-100 dark:border-gray-700">
+            {{ glide:icon width="256" height="256" }}
+                <img src="{{ url }}" alt="{{ alt }}" class="w-full h-full object-cover">
+            {{ /glide:icon }}
+        </div>
+
+        <!-- Title and details -->
+        <div class="flex-1">
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">{{ title }}</h1>
+            
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                <!-- Category -->
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+                    {{ if collection == "apps" }}
+                        <i class="fa fa-mobile-alt mr-1.5"></i>
+                    {{ elseif collection == "games" }}
+                        <i class="fa fa-gamepad mr-1.5"></i>
+                    {{ else }}
+                        <i class="fa fa-tools mr-1.5"></i>
+                    {{ /if }}
+                    {{ category }}
+                </span>
+                
+                <!-- Rating -->
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300">
+                    <i class="fa fa-star mr-1.5"></i>
+                    {{ rating }}
+                </span>
+                
+                <!-- Size -->
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300">
+                   <i class="fas fa-hdd"></i>
+                    {{ size }}
+                </span>
+                
+                <!-- Version -->
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300">
+                    <i class="fa fa-code-branch mr-1.5"></i>
+                    v{{ version }}
+                </span>
+                
+                <!-- Age rating for games -->
+                {{ if collection == "games" && age_rating }}
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                    <i class="fa fa-users mr-1.5"></i>
+                    {{ age_rating | title }}
+                </span>
+                {{ /if }}
+                
+                <!-- Pro version for tools -->
+                {{ if collection == "tools" && pro_version_available }}
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                    <i class="fa fa-crown mr-1.5"></i>
+                    Pro Available
+                </span>
+                {{ /if }}
+                
+                <!-- In-app purchases for games -->
+                {{ if collection == "games" && in_app_purchases }}
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300">
+                    <i class="fa fa-shopping-cart mr-1.5"></i>
+                    In-App Purchases
+                </span>
+                {{ /if }}
+            </div>
+            
+            <!-- Developer -->
+            <div class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                by <span class="font-medium">{{ developer }}</span>
+            </div>
+            
+            <!-- Download button -->
+            <div class="flex items-center gap-3">
+                <button class="inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-xl transition-colors shadow-sm hover:shadow download-button"
+                        data-id="{{ id }}"
+                        data-content-locker="{{ content_locker }}"
+                        data-cpa-link="{{ cpa_link }}"
+                        data-smart-link="{{ smart_link_enabled }}"
+                        {{ if collection == "apps" || collection == "games" }}
+                        data-android="{{ android_link }}"
+                        data-ios="{{ ios_link }}"
+                        {{ elseif collection == "tools" }}
+                        data-windows="{{ windows_link }}"
+                        data-mac="{{ mac_link }}"
+                        data-linux="{{ linux_link }}"
+                        {{ /if }}
+                        data-default="{{ default_link }}">
+                    <i class="fa fa-download mr-2"></i>
+                    Download {{ title }}
+                </button>
+                
+                <!-- Share button -->
+                <button class="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-xl transition-colors share-button"
+                        data-url="{{ current_url }}"
+                        data-title="{{ title }}">
+                    <i class="fa fa-share-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Screenshots gallery -->
+    {{ if screenshots }}
+    <div class="mb-8 sm:mb-10">
+        <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">Screenshots</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+            {{ screenshots }}
+                <a href="{{ url }}" class="block aspect-video rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-gray-100 dark:bg-gray-800 lightbox-image">
+                    {{ glide:url width="400" height="225" fit="crop_focal" }}
+                        <img src="{{ url }}" alt="{{ alt ?? title ~ ' screenshot ' ~ index }}" class="w-full h-full object-cover">
+                    {{ /glide:url }}
+                </a>
+            {{ /screenshots }}
+        </div>
+    </div>
+    {{ /if }}
+    
+    <!-- Game video (for games only) -->
+    {{ if collection == "games" && promo_video }}
+    <div class="mb-8 sm:mb-10">
+        <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">Game Trailer</h2>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-md bg-gray-100 dark:bg-gray-800">
+            <div class="w-full h-full video-embed" data-video="{{ promo_video }}"></div>
+        </div>
+    </div>
+    {{ /if }}
+    
+    <!-- Description -->
+    <div class="mb-8 sm:mb-10">
+        <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">Description</h2>
+        <div class="prose prose-sm sm:prose max-w-none dark:prose-invert prose-headings:text-gray-800 dark:prose-headings:text-gray-200 prose-p:text-gray-600 dark:prose-p:text-gray-400">
+            {{ if collection == "apps" }}
+                {{ app_description }}
+            {{ elseif collection == "games" }}
+                {{ game_description }}
+            {{ else }}
+                {{ tool_description }}
+            {{ /if }}
+        </div>
+    </div>
+    
+    <!-- Download information -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 sm:p-6 mb-8 sm:mb-10">
+        <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">Download Information</h2>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <!-- Version info -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-500 dark:text-blue-400">
+                    <i class="fa fa-code-branch"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-medium text-gray-800 dark:text-gray-200">Version</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ version }}</p>
+                </div>
+            </div>
+            
+            <!-- Size info -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-500 dark:text-green-400">
+                <i class="fas fa-hdd"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-medium text-gray-800 dark:text-gray-200">Size</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ size }}</p>
+                </div>
+            </div>
+            
+            <!-- Category info -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-500 dark:text-purple-400">
+                    <i class="fa fa-tag"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-medium text-gray-800 dark:text-gray-200">Category</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ category }}</p>
+                </div>
+            </div>
+            
+            <!-- Developer info -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-500 dark:text-amber-400">
+                    <i class="fa fa-code"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-medium text-gray-800 dark:text-gray-200">Developer</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ developer }}</p>
+                </div>
+            </div>
+            
+            <!-- Platform info for tools -->
+            {{ if collection == "tools" && smart_link_enabled }}
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-400">
+                    <i class="fa fa-desktop"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-medium text-gray-800 dark:text-gray-200">Platforms</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        {{ if windows_link }}Windows{{ if mac_link || linux_link }}, {{ /if }}{{ /if }}
+                        {{ if mac_link }}macOS{{ if linux_link }}, {{ /if }}{{ /if }}
+                        {{ if linux_link }}Linux{{ /if }}
+                    </p>
+                </div>
+            </div>
+            {{ /if }}
+            
+            <!-- Age rating for games -->
+            {{ if collection == "games" && age_rating }}
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-500 dark:text-red-400">
+                    <i class="fa fa-users"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-medium text-gray-800 dark:text-gray-200">Age Rating</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ age_rating | title }}</p>
+                </div>
+            </div>
+            {{ /if }}
+        </div>
+    </div>
+    
+    <!-- Related items -->
+
+    
+    <!-- Download CTA -->
+    <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl shadow-md p-4 sm:p-6 mb-8 sm:mb-10">
+        <div class="text-center">
+            <h2 class="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3">Ready to Download {{ title }}?</h2>
+            <p class="text-blue-100 mb-4 sm:mb-6 max-w-xl mx-auto">Get {{ title }} now and join thousands of satisfied users. {{ if collection == "tools" && affiliate_program }}Become an affiliate and earn while sharing!{{ /if }}</p>
+            
+            <button class="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-white hover:bg-gray-100 text-blue-600 font-medium rounded-xl transition-colors shadow-sm hover:shadow download-button"
+                    data-id="{{ id }}"
+                    data-content-locker="{{ content_locker }}"
+                    data-cpa-link="{{ cpa_link }}"
+                    data-smart-link="{{ smart_link_enabled }}"
+                    {{ if collection == "apps" || collection == "games" }}
+                    data-android="{{ android_link }}"
+                    data-ios="{{ ios_link }}"
+                    {{ elseif collection == "tools" }}
+                    data-windows="{{ windows_link }}"
+                    data-mac="{{ mac_link }}"
+                    data-linux="{{ linux_link }}"
+                    {{ /if }}
+                    data-default="{{ default_link }}">
+                <i class="fa fa-download mr-2"></i>
+                Download Now
+            </button>
+            
+            <!-- Affiliate link for tools -->
+            {{ if collection == "tools" && affiliate_program }}
+            <div class="mt-4">
+                <a href="{{ affiliate_link }}" class="text-sm text-blue-100 hover:text-white underline">Become an affiliate</a>
+            </div>
+            {{ /if }}
+        </div>
+    </div>
+    
+    <!-- Download script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle download buttons
+            document.querySelectorAll('.download-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const contentLocker = this.dataset.contentLocker === "true";
+                    const smartLink = this.dataset.smartLink === "true";
+                    const cpaLink = this.dataset.cpaLink;
+                    
+                    // If content locker is enabled and CPA link exists
+                    if (contentLocker && cpaLink) {
+                        window.location.href = cpaLink;
+                        return;
+                    }
+                    
+                    // Handle smart links
+                    if (smartLink) {
+                        const userAgent = navigator.userAgent.toLowerCase();
+                        const isAndroid = userAgent.indexOf("android") > -1;
+                        const isIOS = /iphone|ipad|ipod/.test(userAgent);
+                        const isWindows = userAgent.indexOf("windows") > -1;
+                        const isMac = userAgent.indexOf("mac") > -1;
+                        const isLinux = userAgent.indexOf("linux") > -1 && !isAndroid;
+                        
+                        // Check for mobile platforms first
+                        if (isAndroid && this.dataset.android) {
+                            window.location.href = this.dataset.android;
+                            return;
+                        }
+                        if (isIOS && this.dataset.ios) {
+                            window.location.href = this.dataset.ios;
+                            return;
+                        }
+                        
+                        // Check for desktop platforms
+                        if (isWindows && this.dataset.windows) {
+                            window.location.href = this.dataset.windows;
+                            return;
+                        }
+                        if (isMac && this.dataset.mac) {
+                            window.location.href = this.dataset.mac;
+                            return;
+                        }
+                        if (isLinux && this.dataset.linux) {
+                            window.location.href = this.dataset.linux;
+                            return;
+                        }
+                    }
+                    
+                    // Default fallback
+                    if (this.dataset.default) {
+                        window.location.href = this.dataset.default;
+                    }
+                });
+            });
+            
+            // Handle share button
+            document.querySelectorAll('.share-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    if (navigator.share) {
+                        navigator.share({
+                            title: this.dataset.title,
+                            url: this.dataset.url
+                        });
+                    } else {
+                        // Fallback - copy to clipboard
+                        navigator.clipboard.writeText(this.dataset.url)
+                            .then(() => {
+                                // Show toast or alert
+                                alert('Link copied to clipboard!');
+                            });
+                    }
+                });
+            });
+            
+            // Initialize lightbox for screenshots if available
+            if (typeof GLightbox === 'function') {
+                GLightbox({
+                    selector: '.lightbox-image'
+                });
+            }
+            
+            // Initialize video embeds
+            document.querySelectorAll('.video-embed').forEach(container => {
+                const videoUrl = container.dataset.video;
+                if (videoUrl) {
+                    if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+                        // Extract YouTube ID
+                        let youtubeId = '';
+                        if (videoUrl.includes('youtu.be/')) {
+                            youtubeId = videoUrl.split('youtu.be/')[1].split('?')[0];
+                        } else if (videoUrl.includes('youtube.com/watch')) {
+                            const urlParams = new URLSearchParams(videoUrl.split('?')[1]);
+                            youtubeId = urlParams.get('v');
+                        }
+                        
+                        if (youtubeId) {
+                            container.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeId}" 
+                                                        frameborder="0" allowfullscreen
+                                                        class="w-full h-full"></iframe>`;
+                        }
+                    } else if (videoUrl.includes('vimeo.com')) {
+                        // Extract Vimeo ID
+                        const vimeoId = videoUrl.split('vimeo.com/')[1].split('?')[0];
+                        if (vimeoId) {
+                            container.innerHTML = `<iframe src="https://player.vimeo.com/video/${vimeoId}" 
+                                                        frameborder="0" allowfullscreen
+                                                        class="w-full h-full"></iframe>`;
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</div>

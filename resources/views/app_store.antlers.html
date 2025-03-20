@@ -1,0 +1,241 @@
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <img src="{{ settings:site_logo }}" alt="{{ settings:site_name }} Logo">
+                {{ settings:site_name }}
+            </div>
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search apps and games...">
+            </div>
+            <button class="settings-btn">
+                <i class="fas fa-cog"></i>
+            </button>
+        </header>
+
+        <div class="sidebar">
+            <a href="{{ site:url }}" class="sidebar-item {{ if current_url == '/' }}active{{ /if }}">
+                <i class="fas fa-compass"></i>
+                <span>Discover</span>
+            </a>
+            <a href="{{ site:url }}" class="sidebar-item {{ if segment_1 == 'games' }}active{{ /if }}">
+                <i class="fas fa-gamepad"></i>
+                <span>Games</span>
+            </a>
+            <a href="{{ site:url }}" class="sidebar-item {{ if segment_1 == 'apps' }}active{{ /if }}">
+                <i class="fas fa-mobile-alt"></i>
+                <span>Apps</span>
+            </a>
+            <a href="{{ site:url }}" class="sidebar-item {{ if segment_1 == 'tools' }}active{{ /if }}">
+                <i class="fas fa-tools"></i>
+                <span>Tools</span>
+            </a>
+        </div>
+
+        <div class="main-content">
+            {{# Only show platform banners on homepage #}}
+            {{ if current_url == '/' }}
+            <div class="install-banners">
+                <div class="install-banner android-banner" data-platform="android">
+                    <i class="fab fa-android"></i>
+                    <div class="install-text">
+                        <span>Get it on</span>
+                        <strong>Google Play</strong>
+                    </div>
+                </div>
+                <div class="install-banner ios-banner" data-platform="ios">
+                    <i class="fab fa-apple"></i>
+                    <div class="install-text">
+                        <span>Download on the</span>
+                        <strong>App Store</strong>
+                    </div>
+                </div>
+            </div>
+            {{ /if }}
+
+            {{# Featured section - combine from all collections #}}
+            <div class="featured-apps">
+                {{ collection:apps featured:is="true" limit="2" merge="true" }}
+                {{ collection:games featured:is="true" limit="2" merge="true" }}
+                {{ collection:tools featured:is="true" limit="1" merge="true" }}
+                    <div class="featured-app">
+                        <img src="{{ featured_image }}" alt="{{ title }}">
+                        <div class="featured-app-info">
+                            <h3>
+                                {{ title }}
+                                <span class="app-rating"><i class="fas fa-star"></i> {{ rating }}</span>
+                            </h3>
+                            <p>{{ short_description }}</p>
+                        </div>
+                    </div>
+                {{ /collection:tools }}
+            </div>
+
+            {{# Trending section #}}
+            <div class="section-header">
+                <h2>Trending</h2>
+            </div>
+
+            <div class="app-grid">
+                {{ collection:apps is_trending:is="true" limit="2" merge="true" }}
+                {{ collection:games is_trending:is="true" limit="2" merge="true" }}
+                {{ collection:tools is_trending:is="true" limit="2" merge="true" }}
+                    <div class="app-card">
+                        <div class="app-icon">
+                            <img src="{{ icon }}" alt="{{ title }}">
+                        </div>
+                        <div class="app-name">{{ title }}</div>
+                        <div class="app-category">{{ collection }}</div>
+                    </div>
+                {{ /collection:tools }}
+            </div>
+
+            {{# Games section #}}
+            <div class="section-header">
+                <h2>Games</h2>
+                <a href="{{ site:url }}" class="view-all">View all</a>
+            </div>
+
+            <div class="app-list">
+                {{ collection:games sort="rating:desc" limit="3" }}
+                    <div class="app-list-item">
+                        <div class="app-list-icon">
+                            <img src="{{ icon }}" alt="{{ title }}">
+                        </div>
+                        <div class="app-list-info">
+                            <div class="app-list-header">
+                                <h3>{{ title }}</h3>
+                            </div>
+                            <div class="app-stats">
+                                <div class="app-size">
+                                    <i class="fas fa-hdd"></i>
+                                    <span>{{ size }}</span>
+                                </div>
+                                <div class="app-rating-inline">
+                                    <i class="fas fa-star"></i>
+                                    <span>{{ rating }}</span>
+                                </div>
+                            </div>
+                            <div class="processing-indicator" data-time="{{ processing_time ?? 2000 }}"></div>
+                        </div>
+                        <button class="download-btn"
+                                data-id="{{ id }}"
+                                data-has-locker="{{ content_locker }}"
+                                data-cpa-link="{{ cpa_link }}"
+                                data-smart-link="{{ smart_link_enabled }}"
+                                data-android-link="{{ android_link }}"
+                                data-ios-link="{{ ios_link }}"
+                                data-default-link="{{ default_link }}">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                {{ /collection:games }}
+            </div>
+
+            {{# Apps section #}}
+            <div class="section-header">
+                <h2>Apps</h2>
+                <a href="{{ site:url }}" class="view-all">View all</a>
+            </div>
+
+            <div class="app-list">
+                {{ collection:apps sort="rating:desc" limit="3" }}
+                    <div class="app-list-item">
+                        <div class="app-list-icon">
+                            <img src="{{ icon }}" alt="{{ title }}">
+                        </div>
+                        <div class="app-list-info">
+                            <div class="app-list-header">
+                                <h3>{{ title }}</h3>
+                            </div>
+                            <div class="app-stats">
+                                <div class="app-size">
+                                    <i class="fas fa-hdd"></i>
+                                    <span>{{ size }}</span>
+                                </div>
+                                <div class="app-rating-inline">
+                                    <i class="fas fa-star"></i>
+                                    <span>{{ rating }}</span>
+                                </div>
+                            </div>
+                            <div class="processing-indicator" data-time="{{ processing_time ?? 2000 }}"></div>
+                        </div>
+                        <button class="download-btn"
+                                data-id="{{ id }}"
+                                data-has-locker="{{ content_locker }}"
+                                data-cpa-link="{{ cpa_link }}"
+                                data-smart-link="{{ smart_link_enabled }}"
+                                data-android-link="{{ android_link }}"
+                                data-ios-link="{{ ios_link }}"
+                                data-default-link="{{ default_link }}">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                {{ /collection:apps }}
+            </div>
+
+            {{# Only show tools on home page #}}
+            {{ if current_url == '/' }}
+            <div class="section-header">
+                <h2>Tools</h2>
+                <a href="{{ site:url }}" class="view-all">View all</a>
+            </div>
+
+            <div class="app-list">
+                {{ collection:tools sort="rating:desc" limit="2" }}
+                    <div class="app-list-item">
+                        <div class="app-list-icon">
+                            <img src="{{ icon }}" alt="{{ title }}">
+                        </div>
+                        <div class="app-list-info">
+                            <div class="app-list-header">
+                                <h3>{{ title }}</h3>
+                            </div>
+                            <div class="app-stats">
+                                <div class="app-size">
+                                    <i class="fas fa-hdd"></i>
+                                    <span>{{ size }}</span>
+                                </div>
+                                <div class="app-rating-inline">
+                                    <i class="fas fa-star"></i>
+                                    <span>{{ rating }}</span>
+                                </div>
+                            </div>
+                            <div class="processing-indicator" data-time="{{ processing_time ?? 1500 }}"></div>
+                        </div>
+                        <button class="download-btn"
+                                data-id="{{ id }}"
+                                data-has-locker="{{ content_locker }}"
+                                data-cpa-link="{{ cpa_link }}"
+                                data-smart-link="{{ smart_link_enabled }}"
+                                data-windows-link="{{ windows_link }}"
+                                data-mac-link="{{ mac_link }}"
+                                data-linux-link="{{ linux_link }}"
+                                data-default-link="{{ default_link }}">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                {{ /collection:tools }}
+            </div>
+            {{ /if }}
+        </div>
+
+        <footer>
+            <p>{{ settings:site_name }} © {{ now format="Y" }} - All trademarks and logos appearing on the site are the property of their respective owners.</p>
+        </footer>
+    </div>
+
+    {{# Content locker modal template #}}
+    <div id="contentLockerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Complete Action to Download</h2>
+            <p>To access the download, please complete the action below:</p>
+            <div id="cpaFrameContainer">
+                <iframe id="cpaFrame" src="" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
