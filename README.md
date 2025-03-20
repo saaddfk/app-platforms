@@ -32,31 +32,13 @@ A Statamic-powered CMS platform for managing and showcasing mobile apps, games, 
 Install dependencies:
 
 bash
-Copy
 composer install
 npm install
 Configure environment:
 
 bash
-Copy
 cp .env.example .env
 php artisan key:generate
-Project Structure
-Copy
-├── content
-│   ├── collections
-│   │   ├── apps
-│   │   ├── games
-│   │   └── tools
-├── resources
-│   └── views
-│       ├── layouts
-│       └── partials
-├── public
-│   ├── css
-│   └── assets
-└── storage
-    └── glide
 Key Components
 Collection Blueprints
 Example apps.yaml:
@@ -73,7 +55,7 @@ sections:
         field: { type: assets, container: app_assets, max_files: 1 }
 Smart Download Logic
 javascript
-Copy
+
 // Handles platform detection
 const handleDownload = (button) => {
   const ua = navigator.userAgent;
