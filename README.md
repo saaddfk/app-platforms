@@ -39,12 +39,12 @@ Configure environment:
 bash
 cp .env.example .env
 php artisan key:generate
-Key Components
+
+##  Key Components
 Collection Blueprints
 Example apps.yaml:
 
 yaml
-Copy
 title: App
 sections:
   main:
@@ -53,7 +53,9 @@ sections:
         field: { type: text, required: true }
       - handle: featured_image
         field: { type: assets, container: app_assets, max_files: 1 }
-Smart Download Logic
+
+
+##  Smart Download Logic
 javascript
 
 // Handles platform detection
