@@ -25,55 +25,38 @@ A Statamic-powered CMS platform for managing and showcasing mobile apps, games, 
 
 ## Installation
 
-1. Clone repo:
+- Clone repo:
    bash
-   git clone https://github.com/saaddfk/app-platforms.git
-   cd app-platforms
-Install dependencies:
+   - git clone https://github.com/saaddfk/app-platforms.git
+   - cd app-platforms
+  
 
+- Install dependencies:
 bash
-composer install
-npm install
+- composer install
+- npm install
+- npm run dev
 Configure environment:
 
 bash
-cp .env.example .env
-php artisan key:generate
+- cp .env.example .env
+- php artisan key:generate
 
 ##  Key Components
-Collection Blueprints
-Example apps.yaml:
+- Collection Blueprints
+- Example apps.yaml:
 
-yaml
-title: App
-sections:
-  main:
-    fields:
-      - handle: title
-        field: { type: text, required: true }
-      - handle: featured_image
-        field: { type: assets, container: app_assets, max_files: 1 }
+- yaml
+- title: App
+- handle: title
+- field: { type: text, required: true }
+ - handle: featured_image
+- field: { type: assets, container: app_assets, max_files: 1 }
 
 
 ##  Smart Download Logic
-javascript
-
-// Handles platform detection
-const handleDownload = (button) => {
-  const ua = navigator.userAgent;
-  const isAndroid = /android/i.test(ua);
-  const isIOS = /iphone|ipad/i.test(ua);
-  
-  if(isAndroid && button.dataset.android) {
-    window.location = button.dataset.android;
-  } else if(isIOS && button.dataset.ios) {
-    window.location = button.dataset.ios;
-  } else {
-    window.location = button.dataset.default;
-  }
-}
-   Important Links
-Statamic Main Site : https://statamic.com
+###  Important Links
+- Statamic Main Site : https://statamic.com
 
 This version:
 1. Maintains the original Statamic format
